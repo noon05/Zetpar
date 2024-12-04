@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  zetpar:
+    build: .
+    container_name: zetpar
+    stdin_open: true 
+    tty: true        
+    volumes:
+      - ./zoblako/data:/app/zoblako/data  
+      - .:/app  
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TERM=xterm-256color  
+      - COLORTERM=truecolor
+      - FORCE_COLOR=true
+    restart: "no" 
+    command: python -u main.py
