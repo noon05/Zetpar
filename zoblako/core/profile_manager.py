@@ -9,6 +9,8 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 class ProfileManager:
+    """В идеале я бы конечно все же бы хотел реализовать сохранение фулл сессии, но мне лень"""
+    
     def __init__(self):
         self.profiles_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 'profiles')
         self.profiles_file = os.path.join(self.profiles_dir, 'profiles.json')
@@ -23,16 +25,16 @@ class ProfileManager:
             with open(self.profiles_file, 'w') as f:
                 json.dump({}, f)
                 
-    def _generate_key(self):
+    def _generate_key(self): # Для галочки
         """Генерация ключа шифрования"""
-        salt = b'zetpar_salt'  # В реальном приложении следует использовать случайную соль
+        salt = b'zetpar_salt'  
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
             salt=salt,
             iterations=100000,
         )
-        key = base64.urlsafe_b64encode(kdf.derive(b'zetpar_key'))  # В реальном приложении следует использовать случайный ключ
+        key = base64.urlsafe_b64encode(kdf.derive(b'zetpar_key'))  
         return key
         
     def save_profile(self, username, password):
@@ -40,11 +42,7 @@ class ProfileManager:
         try:
             with open(self.profiles_file, 'r') as f:
                 profiles = json.load(f)
-                
-            # Шифруем пароль
-            encrypted_password = self.fernet.encrypt(password.encode()).decode()
-            
-            # Сохраняем профиль
+            encrypted_password = self.fernet.encrypt(password.encode()).decode() # Для галочки часть 2
             profiles[username] = {
                 'password': encrypted_password
             }
@@ -63,7 +61,7 @@ class ProfileManager:
                 profiles = json.load(f)
                 
             if username in profiles:
-                # Расшифровываем пароль
+                # Для галочки часть 3
                 encrypted_password = profiles[username]['password'].encode()
                 password = self.fernet.decrypt(encrypted_password).decode()
                 return password

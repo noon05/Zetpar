@@ -12,10 +12,9 @@ from rich.layout import Layout
 
 # Тема Steam
 class ConsoleUI:
-    """Класс консольного интерфейса"""
+    """Класс консольного интерфейса, моя гордость и красоточка<3"""
     
     def __init__(self):
-        # Создаем тему Steam
         self.steam_theme = Theme({
             "steam_blue": "#1b2838",  
             "steam_gray": "#c7d5e0",  

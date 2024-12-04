@@ -1,3 +1,6 @@
+"""
+Изначальный говнокод
+"""
 import os
 import sys
 import time
@@ -25,20 +28,14 @@ def steam_idle(username, password, app_id):
     :param app_id: ID игры в Steam
     """
     client = SteamClient()
-    sentry_path = 'steam_sentry.bin'  # Файл для сохранения данных сессии
+    sentry_path = 'steam_sentry.bin'  
     
     try:
-        # Проверяем наличие сохраненной сессии
         if os.path.exists(sentry_path):
             client.set_credential_location(sentry_path)
 
-        # Сначала запрашиваем Steam Guard код
         guard_code = input("Введите код Steam Guard из мобильного приложения (оставьте пустым, если не требуется): ")
-        
-        # Попытка входа в Steam
         result = client.login(username=username, password=password, two_factor_code=guard_code)
-        
-        # Повторный запрос кода, если первая попытка не удалась
         while result in (None, 'invalid_2fa'):
             guard_code = input("Неверный код. Введите код Steam Guard снова: ")
             result = client.login(username=username, password=password, two_factor_code=guard_code)
@@ -50,8 +47,6 @@ def steam_idle(username, password, app_id):
         
         print(f"Успешный вход в Steam как {client.user.name}")
         print(f"Начинаем фармить часы в игре (App ID: {app_id})")
-        
-        # Эмулируем запуск игры
         client.games_played([app_id])
         
         start_time = time.time()
@@ -69,11 +64,9 @@ def steam_idle(username, password, app_id):
                 print(f"Время работы: {hours:02d}:{minutes:02d}:{seconds:02d}")
                 print("\nНажмите Ctrl+C для выхода")
                 
-                # Обновляем статус каждые 30 секунд
                 if elapsed_time % 30 == 0:
                     client.games_played([app_id])
-                
-                # Поддерживаем соединение
+
                 client.run_forever()
                 time.sleep(1)
                 
@@ -84,7 +77,7 @@ def steam_idle(username, password, app_id):
         print(f"Произошла ошибка: {e}")
     
     finally:
-        client.games_played([])  # Очищаем статус игры
+        client.games_played([]) 
         client.logout()
         print("Выход из Steam выполнен")
 
