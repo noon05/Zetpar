@@ -27,7 +27,7 @@ Zetpar - это консольный менеджер для Steam, которы
 
 ```bash
 # Клонируем репозиторий
-git clone [url] zetpar
+git clone https://github.com/noon05/Zetpar.git
 cd zetpar
 
 # Создаем виртуальное окружение (рекомендуется)
